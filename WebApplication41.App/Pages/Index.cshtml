@@ -1,0 +1,33 @@
+﻿@page "/"
+@inject Services.ChatService Chat
+
+<ul>
+    @foreach (var message in Chat.Messages)
+    {
+        <li>@message</li>
+    }
+</ul>
+
+<form onsubmit=@SendMessage>
+    <input type="text" bind=@CurrentLine />
+    <input type="submit" value="Senden" />
+</form>
+
+@functions {
+    protected override void OnInit()
+    {
+        base.OnInit();
+        Chat.OnMessageReceived += (sender, e) =>
+        {
+            StateHasChanged();
+        };
+    }
+
+    public string CurrentLine { get; set; }
+
+    public void SendMessage()
+    {
+        Chat.AddMessage(CurrentLine);
+        CurrentLine = "";
+    }
+}
