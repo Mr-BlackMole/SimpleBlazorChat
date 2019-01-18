@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject Services.ChatService Chat
+@implements IDisposable
 
 <ul>
     @foreach (var message in Chat.Messages)
@@ -17,10 +18,12 @@
     protected override void OnInit()
     {
         base.OnInit();
-        Chat.OnMessageReceived += (sender, e) =>
-        {
-            StateHasChanged();
-        };
+        Chat.OnMessageReceived += MessageReceived;
+    }
+
+    private void MessageReceived(object sender, EventArgs e)
+    {
+        StateHasChanged();
     }
 
     public string CurrentLine { get; set; }
@@ -29,5 +32,10 @@
     {
         Chat.AddMessage(CurrentLine);
         CurrentLine = "";
+    }
+
+    public void Dispose()
+    {
+        Chat.OnMessageReceived -= MessageReceived;
     }
 }
