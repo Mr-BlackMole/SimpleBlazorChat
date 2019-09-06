@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebApplication41.App.Services
+namespace SimpleBlazorChat.Services
 {
     public class ChatService
     {

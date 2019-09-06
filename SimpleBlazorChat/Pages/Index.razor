@@ -9,21 +9,22 @@
     }
 </ul>
 
-<form onsubmit=@SendMessage>
-    <input type="text" bind=@CurrentLine />
+<form @onsubmit=SendMessage>
+    <input type="text" @bind=CurrentLine />
     <input type="submit" value="Senden" />
 </form>
 
-@functions {
-    protected override void OnInit()
+@code
+{
+    protected override void OnInitialized()
     {
-        base.OnInit();
+        base.OnInitialized();
         Chat.OnMessageReceived += MessageReceived;
     }
 
     private void MessageReceived(object sender, EventArgs e)
     {
-        StateHasChanged();
+        InvokeAsync(StateHasChanged);
     }
 
     public string CurrentLine { get; set; }
